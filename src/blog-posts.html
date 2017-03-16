@@ -42,7 +42,7 @@
      ],
 
      _dataIdChanged: function(id) {
-         this.page = id === '' ? 'list' : 'single';
+         this.page = !id ? 'list' : 'single';
      },
 
      _pageChanged: function(page) {

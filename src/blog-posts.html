@@ -1,0 +1,69 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
+
+
+<dom-module id="blog-posts">
+   <template>
+      <style>
+      :host {
+         display: block;
+      }
+      .mensaje {
+        color: #DF0101;
+      }
+      </style>
+      <p class="mensaje">Visualizando blog-posts.html</p>
+      <app-route route="{{route}}" pattern="/:id" data="{{routeData}}"></app-route>
+
+      <iron-pages attr-for-selected="name" selected="[[page]]" fallback-selection="404">
+         <blog-posts-list name="list"></blog-posts-list>
+         <blog-posts-single name="single" post-id="[[routeData.id]]"></bog-posts-single>
+         <blog-404 name="404"></blog-404>
+      </iron-pages>
+   </template>
+
+   <script>
+   Polymer({
+     is: 'blog-posts',
+
+     properties: {
+         route: Object,
+         page: {
+           type: String,
+           reflectToAttribute: true,
+           observer: '_pageChanged'
+         }
+     },
+
+     observers: [
+       '_dataIdChanged(routeData.id)'
+     ],
+
+     _dataIdChanged: function(id) {
+         this.page = id === '' ? 'list' : 'single';
+     },
+
+     _pageChanged: function(page) {
+         var urlToImport;
+         if (page === '404') {
+             urlToImport = './blog-' + page + '.html';
+         } else {
+             urlToImport = './blog-posts-' + page + '.html';
+         }
+
+       this.importHref(
+         this.resolveUrl(urlToImport),
+         null,
+         this._showPage404,
+         true
+       );
+     },
+
+     _showPage404: function() {
+       this.page = '404';
+     }
+   });
+   </script>
+</dom-module>

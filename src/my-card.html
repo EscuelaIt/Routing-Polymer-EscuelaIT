@@ -1,0 +1,43 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+
+
+<dom-module id="my-card">
+	<template>
+		<style>
+			:host {
+				display: block;
+				
+			}
+			div {
+			    background-color: lightgrey;
+			    width: 200px;
+			    border: 5px solid green;
+			    padding: 25px;
+			    margin: 25px;
+			    float: left;
+			}
+		</style>
+
+		<div>
+			<h1>[[title]]</h1>
+			<p>[[body]]</p>
+		</div>
+
+	</template>
+	<script>
+		Polymer({
+			is: 'my-card',
+
+			properties: {
+				title: {
+					type: String
+				},
+
+				body: {
+					type: String
+				}
+			}
+		});
+	</script>
+</dom-module>

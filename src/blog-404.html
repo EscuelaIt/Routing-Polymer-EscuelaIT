@@ -1,0 +1,42 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
+<dom-module id="blog-404">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+
+    <app-location route={{route}}></app-location>
+    <app-route route="{{route}}" pattern="/:page" data="{{data}}"></app-route>
+
+    <div name="404">
+      <h3>Error 404</h3>
+      <p><a href="/home">Go to home</a></p>
+      <p><a href="#" on-tap="goHome">Go to home, again</a></p>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'blog-404',
+
+      properties: {
+          route:{
+              type: Object
+          }
+      },
+
+      goHome: function() {
+        this.set('route.path', '/home');
+        console.log(this.route)
+      }
+
+    });
+  </script>
+</dom-module>
+
+

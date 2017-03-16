@@ -1,0 +1,40 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
+
+<dom-module id="blog-posts-list">
+	<template>
+		<style>
+			:host {
+				display: block;
+			}
+      .mensaje {
+        color: #DF0101;
+      }
+		</style>
+
+    <p class="mensaje">Visualizando blog-posts-lists.html</p>
+		
+    <iron-ajax auto url="https://jsonplaceholder.typicode.com/posts" last-response="{{posts}}"></iron-ajax>
+
+    <ul>
+        <template is="dom-repeat" items="[[posts]]">
+            <li><a href$="./[[item.id]]">[[item.title]]</a></li>
+        </template>
+    </ul>
+
+	</template>
+
+	<script>
+    Polymer({
+      is: 'blog-posts-list',
+      posts: {
+          type: Array,
+          value: function(){
+              return [];
+          }
+      }
+    });
+  </script>
+</dom-module>

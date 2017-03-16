@@ -1,0 +1,86 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/paper-menu/paper-menu.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+
+<dom-module id="blog-app">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <p>Los siguientes enlaces sirven para acceder manualmente a las URL's definidas en el router.</p>
+    <p>Lógicamente, también puede cambiarse manualmente la URL en la barra de direcciones del navegador.</p>
+        
+    <a href="/home">Home</a><br>
+    <a href="/posts/">Listado de posts</a><br>
+    <a href="/posts/[[idPost]]">Acceder al post Nº</a> <input value="{{idPost::input}}">
+
+    <paper-menu attr-for-selected="name" selected="{{page}}">
+      <paper-item name ="home">Home</paper-item>
+      <paper-item name ="posts">Posts</paper-item>
+    </paper-menu>
+    
+    <app-location route={{route}}></app-location>
+    <app-route route="{{route}}" pattern="/:page" data="{{data}}" tail="{{subroute}}"></app-route>
+    
+    <iron-pages attr-for-selected="name" selected="[[page]]" fallback-selection="404">
+      <blog-home name="home"></blog-home>
+      <blog-posts name="posts" route="{{subroute}}"></blog-posts>
+      <blog-404 name="404"></blog-404>
+    </iron-pages>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'blog-app',
+
+      properties: {
+        page: {
+          type: String,
+          reflectToAttribute: true,
+          observer: '_pageChanged'
+        },
+        idPost: {
+          type: String,
+          value: 1
+        }
+      },
+
+      observers: [
+        '_dataPageChanged(data.page)'
+      ],
+
+      goHome: function() {
+        this.set('data.page', 'home'); 
+      },
+
+      _dataPageChanged: function(page) {
+        this.page = page || 'home';
+      },
+
+      _pageChanged: function(page) {
+        this.importHref(
+          this.resolveUrl('./blog-' + page + '.html'),
+          this._confirmPage,
+          this._showPage404,
+          true
+        );
+      },
+
+      _confirmPage: function() {
+        this.set('data.page', this.page);
+      },
+
+      _showPage404: function() {
+        this.page = '404';
+      }
+
+    });
+  </script>
+</dom-module>
